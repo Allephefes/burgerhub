@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Users from '../../http/users';
 
 import Button from '../UI/Button/Button';
 import Card from '../UI/Card/Card';
@@ -9,7 +10,7 @@ const AddUser = props => {
     const [password, setPassword] = useState('');
     const [repeat, setRepeat] = useState('');
 
-    const addUserHandler = (event) => {
+    const addUserHandler = async (event) => {
         event.preventDefault();
 
         if (username.trim().length === 0 || password.trim().length === 0) {
@@ -21,6 +22,8 @@ const AddUser = props => {
         if (/[A-Z]/.test(password) && /[a-z]/.test(password) && /[0-9]/.test(password)) {
             return;
         }
+
+        await Users.createUser(username, password, 'consumer');
 
         setUsername('');
         setPassword('');

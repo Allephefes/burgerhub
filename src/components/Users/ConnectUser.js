@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Users from '../../http/users';
 
 import Button from '../UI/Button/Button';
 import Card from '../UI/Card/Card';
@@ -8,16 +9,22 @@ const AddUser = props => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const addUserHandler = (event) => {
+    const addUserHandler = async (event) => {
         event.preventDefault();
 
         if (username.trim().length === 0 || password.trim().length === 0) {
             return;
         }
-        //get password from database & compare
-        // if () {
-        //     return;
-        // }
+
+        await Users.getUsers().then(users => {
+            for(let i = 0; i<users.length;i++) {
+                if(users[i].username === username && users[i].password === password) {
+                    props.success();
+                    return;
+                    //move to main page
+                }
+            }
+        });
 
         setUsername('');
         setPassword('');
