@@ -1,10 +1,12 @@
+import React from 'react';
+import 'bootstrap';
+
+import Home from './components/Home/Home';
+import './App.css';
+
 function App() {
   return (
-    <div>
-      <header>
-        Burgerhub
-      </header>
-    </div>
+    <Home />
   );
 }
 
