@@ -28,6 +28,8 @@ const AddUser = props => {
         setUsername('');
         setPassword('');
         setRepeat('');
+
+        props.back();
     }
 
     const usernameHandler = (event) => {

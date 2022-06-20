@@ -19,7 +19,7 @@ const AddUser = props => {
         await Users.getUsers().then(users => {
             for(let i = 0; i<users.length;i++) {
                 if(users[i].username === username && users[i].password === password) {
-                    props.success();
+                    props.success(users[i].auth);
                     return;
                     //move to main page
                 }
