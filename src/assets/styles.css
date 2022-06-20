@@ -2,7 +2,18 @@
 @import './Header/header-icon.css';
 @import './product-item.css';
 @import './product-item-form.css';
+@import './Kitchen/Cart/cart.css';
+@import './UI/backdrop.css';
+@import './UI/Modal/modal.css';
+@import './Products/build-burger.css';
 
 .jc {
     justify-content: space-between;
+}
+
+.ml-1 {
+    margin-left: 1vw
+}
+.white {
+    color: #FFFFFF;
 }

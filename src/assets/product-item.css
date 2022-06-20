@@ -7,7 +7,7 @@
   }
   
   .meal h3 {
-    margin: 0 0 0.25rem 0;
+    margin: 1rem;
   }
   
   .description {
@@ -15,7 +15,7 @@
   }
   
   .price {
-    margin-top: 0.25rem;
+    margin: 1rem;
     font-weight: bold;
     color: #ad5502;
     font-size: 1.25rem;
