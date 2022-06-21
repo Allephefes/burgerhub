@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 
-import AvailableProducts from './AvailableProducts';
+import ShowProducts from './ShowProducts';
 import BuildBurger from './BuildBurger';
 
 const filterReducer = (state, action) => {
@@ -20,7 +20,7 @@ const Products = (props) => {
 
     return <React.Fragment>
         <BuildBurger filterHandler={filterHandler}></BuildBurger>
-        <AvailableProducts filter={filter.value}></AvailableProducts>
+        <ShowProducts filter={filter.value}></ShowProducts>
     </React.Fragment>;
 }
 

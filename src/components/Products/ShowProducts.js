@@ -5,7 +5,7 @@ import './Products.css';
 import ProductItem from './ProductItem/ProductItem';
 import Card from '../UI/Card/Card';
 
-const AvailableProducts = (props) => {
+const ShowProducts = (props) => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
@@ -39,4 +39,4 @@ const AvailableProducts = (props) => {
     </section>
 };
 
-export default AvailableProducts;
+export default ShowProducts;
