@@ -3,7 +3,7 @@ import Select from 'react-select';
 
 import Button from '../UI/Button/Button';
 import ProductContext from '../../context/product-context';
-import BurgerItem from './ProductItem/BurgerItem';
+import BurgerItem from './Items/BurgerItem';
 
 const BuildBurger = (props) => {
     const ctx = useContext(ProductContext);

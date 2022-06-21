@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Products from '../../http/products';
 
-import './Products.css';
-import ProductItem from './ProductItem/ProductItem';
+import ProductContext from '../../context/product-context';
+import ProductItem from './Items/ProductItem';
 import Card from '../UI/Card/Card';
 
 const ShowProducts = (props) => {
     const [products, setProducts] = useState([]);
+
+    const ctx = useContext(ProductContext);
 
     useEffect(() => {
         const effect = async () => {
             return await Products.getProducts().then((products) => {
                 if(props.filter) {
                     products = products.filter((product) => {
-                        return product.part === props.filter;
+                        return product.part === props.filter && product.name !== ctx.currentBurger[props.filter];
                     })
                 }
                 setProducts(products);
             })
         };
         effect();
-    }, [props.filter]);
+    }, [props.filter, ctx]);
 
     return <section className='meals'>
         <Card className='white'>
