@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
 
 import Card from '../UI/Card/Card';
 import Button from '../UI/Button/Button';
 
 import Users from '../../http/users';
 
-const AuthUser = (props) => {
+const AuthUser = () => {
     const [username, setUsername] = useState('');
     const [auth, setAuth] = useState('');
 
@@ -59,11 +58,6 @@ const AuthUser = (props) => {
             <input id='username' type='text' value={username} onChange={usernameHandler}></input>
             <Select styles={style} options={options} onChange={selectHandler} />
             <Button type='submit' className='ml-1'>Change</Button>
-            <Link to='/home' style={{ color: 'inherit', textDecoration: 'inherit' }}>
-                <Button onClick={props.back} className='ml-1'>
-                    Back
-                </Button>
-            </Link>
         </form>
     </Card>
 }
