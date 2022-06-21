@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
-import ProductItemForm from './ProductItemForm';
 import ProductContext from '../../../context/product-context';
+import Button from '../../UI/Button/Button';
 
 const ProductItem = (props) => {
     const ctx = useContext(ProductContext);
@@ -18,7 +18,7 @@ const ProductItem = (props) => {
             <h3>{props.name}</h3>
             <div>{price}</div>
         </div>
-        <ProductItemForm setItem={setItem}>+ Add</ProductItemForm>
+        <Button className='form' onClick={setItem}>+ Add</Button>
     </li>
 }
 
