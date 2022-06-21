@@ -5,7 +5,7 @@
 @import './Kitchen/Cart/cart.css';
 @import './UI/backdrop.css';
 @import './UI/Modal/modal.css';
-@import './Products/build-burger.css';
+@import './Products';
 
 .jc {
     justify-content: space-between;
