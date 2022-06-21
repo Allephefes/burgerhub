@@ -34,7 +34,7 @@ const BuildBurger = (props) => {
             <h2>Build Your Burger!</h2>
             <BurgerItem item={ctx.currentBurger}></BurgerItem>
             <Select styles={style} options={options} onChange={handler}/>
-            <Button onClick={() => ctx.setBurger()}>Add to Cart</Button>
+            {ctx.currentBurger.price !== 0 ? <Button onClick={() => ctx.setBurger()}>Add to Cart</Button> : ''}
         </section>
     );
 };
