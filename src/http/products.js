@@ -8,6 +8,14 @@ const getProducts = async () => {
     });
 }
 
-const Products = {getProducts};
+const createProducts = async (name, part, price) => {
+    return await axiosConnection.post('/product', { name: name, part: part, price: price}).then(res => {
+        return res.data;
+    }).catch(err => {
+        console.log(err);
+    });
+}
+
+const Products = {getProducts, createProducts};
 
 export default Products;
