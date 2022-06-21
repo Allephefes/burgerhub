@@ -2,23 +2,19 @@ import React from 'react';
 
 const BurgerItem = (props) => {
     const price = props.item.price;
-    const burger = Object.values(props.item).filter(value => value !== '').map((value, index, arr) => {
-        if(index === arr.length - 1) {
-            return '';
-        }
-        if(index === 0) {
-            return <div>{value}</div>;
-        }
-        return <div>, {value}</div>;
-    });    
-    return <div>
-        <div>
-            {burger}
+    const burger = props.item;
+    return <React.Fragment>
+        <div className='fdir-row'>
+            <div>Bun: {burger.bun !== '' ? burger.bun : 'None'}</div>
+            <div>Meat: {burger.meat !== '' ? burger.meat : 'None'}</div>
+            <div>Vegetables: {burger.veggies !== '' ? burger.veggies : 'None'}</div>
+            <div>Topping: {burger.topping !== '' ? burger.topping : 'None'}</div>
+            <div>Sauce: {burger.sauce !== '' ? burger.sauce : 'None'}</div>
         </div>
-        <div>
+        <h3>
             {price !== 0 ? `$${price}` : ''}
-        </div>
-    </div>
+        </h3>
+    </React.Fragment>
 }
 
 export default BurgerItem;
