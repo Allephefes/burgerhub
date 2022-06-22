@@ -15,9 +15,9 @@ const ShowProducts = (props) => {
             return await Products.getProducts().then((products) => {
                 if(props.filter) {
                     products = products.filter((product) => {
-                        // if(props.filter === 'sauce' || props.filter === 'veggies') {
-                        //     return product.name !== ctx.currentBurger[props.filter];
-                        // }
+                        if(props.filter === 'meat') {
+                            return product.part === props.filter;
+                        }
                         return product.part === props.filter && product.name !== ctx.currentBurger[props.filter].name;
                     })
                 }
