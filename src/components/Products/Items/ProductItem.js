@@ -8,7 +8,7 @@ const ProductItem = (props) => {
 
     const setItem = (event) => {
         event.preventDefault();
-        ctx.setItem(props.part, props.name, props.price)
+        ctx.setItem(props.part, {name: props.name, price: props.price})
     }
 
     const price = `$${props.price}`
@@ -18,7 +18,7 @@ const ProductItem = (props) => {
             <h3>{props.name}</h3>
             <div>{price}</div>
         </div>
-        <Button className='form' onClick={setItem}>+ Add</Button>
+        <Button className='form' onClick={setItem}>{ctx.currentBurger[props.part].name === '' ? '+ Add' : 'Change'}</Button>
     </li>
 }
 
