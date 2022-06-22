@@ -4,15 +4,15 @@ import ShowProducts from './ShowProducts';
 import BuildBurger from './BuildBurger';
 
 const Products = () => {
-    const [filter, setFilter] = useState({ value: 'none' });
+    const [filter, setFilter] = useState('none');
 
     const filterHandler = (value) => {
-        setFilter({ value:value });
+        setFilter(value);
     }
 
     return <React.Fragment>
         <BuildBurger filterHandler={filterHandler}></BuildBurger>
-        <ShowProducts filter={filter.value}></ShowProducts>
+        <ShowProducts filter={filter}></ShowProducts>
     </React.Fragment>;
 }
 
