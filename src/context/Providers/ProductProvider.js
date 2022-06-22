@@ -4,13 +4,14 @@ import ProductContext from '../product-context';
 
 const defaultProductState = {
     currentBurger: {
-        bun: '',
-        meat: '',
-        veggies: '',
-        topping: '',
-        sauce: '',
+        bun: { name: '', price: 0 },
+        meat: { name: '', price: 0, amount: 0 },
+        veggies: [],
+        topping: { name: '', price: 0 },
+        sauce: [],
         price: 0
     },
+    price: 0,
     burgers: [],
     amount: 0
 }
@@ -18,29 +19,84 @@ const defaultProductState = {
 const productReducer = (state, action) => {
     if (action.type === 'SET_BURGER') {
         const updatedBurgers = state.burgers.concat(action.burger);
-        const updatedAmount = Math.round((state.amount + Number(action.burger.price)) * 100) / 100;
+        const updatedPrice = Math.round((state.amount + Number(action.burger.price)) * 100) / 100;
+        const updatedAmount = updatedBurgers.length;
         return {
             currentBurger: {
-                bun: '',
-                meat: '',
-                veggies: '',
-                topping: '',
-                sauce: '',
+                bun: { name: '', price: 0 },
+                meat: { name: '', price: 0, amount: 0 },
+                veggies: [],
+                topping: { name: '', price: 0 },
+                sauce: [],
                 price: 0
             },
+            price: updatedPrice,
             burgers: updatedBurgers,
             amount: updatedAmount
         }
     }
     else if (action.type === 'SET_ITEM') {
         const updatedBurger = state.currentBurger;
-        if (updatedBurger[action.itemName] === '') {
-            updatedBurger[action.itemName] = action.item;
-            updatedBurger.price = Math.round((updatedBurger.price + Number(action.price)) * 100) / 100;
-            return {
-                currentBurger: updatedBurger,
-                burgers: state.burgers,
-                amount: state.amount
+        switch (action.itemName) {
+            case 'bun':
+            case 'topping': {
+                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName].price) + Number(action.item.price)) * 100) / 100;
+                updatedBurger[action.itemName] = action.item;
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            case 'meat': {
+                if (updatedBurger.meat.amount !== 0) {
+                    if (updatedBurger.meat.name === action.item.name) {
+                        updatedBurger.meat.amount = updatedBurger.meat.amount + 1;
+                        updatedBurger.price = Math.round((updatedBurger.price + Number(updatedBurger.meat.price)) * 100) / 100;
+                        return {
+                            currentBurger: updatedBurger,
+                            burgers: state.burgers,
+                            price: state.price,
+                            amount: state.amount
+                        }
+                    }
+                    else {
+                        updatedBurger.meat.amount = updatedBurger.meat.amount - 1;
+                        updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger.meat.price)) * 100) / 100;
+                    }
+                }
+                updatedBurger.meat = {
+                    name: action.item.name,
+                    price: action.item.price,
+                    amount: updatedBurger.meat.amount + 1
+                }
+                updatedBurger.price = Math.round((updatedBurger.price + Number(action.item.price)) * 100) / 100;
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            case 'sauce':
+            case 'veggies': {
+                updatedBurger.price = Math.round((updatedBurger.price + Number(action.item.price)) * 100) / 100;
+                updatedBurger[action.itemName] = updatedBurger[action.itemName].concat(action.item);
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            default: {
+                return {
+                    currentBurger: state.currentBurger,
+                    price: state.price,
+                    burgers: state.burgers,
+                    amount: state.amount
+                }
             }
         }
     }
@@ -51,6 +107,7 @@ const productReducer = (state, action) => {
         return {
             currentBurger: updatedBurger,
             burgers: state.burgers,
+            price: state.price,
             amount: state.amount
         }
 
@@ -69,8 +126,8 @@ const ProductProvider = (props) => {
         dispatchProductAction({ type: 'DELETE_BURGER', itemName: itemName, price: price })
     }
 
-    const setItem = (itemName, item, price) => {
-        dispatchProductAction({ type: 'SET_ITEM', itemName: itemName, item: item, price: price });
+    const setItem = (itemName, item) => {
+        dispatchProductAction({ type: 'SET_ITEM', itemName: itemName, item: item });
     }
 
     const removeItem = (itemName, price) => {
