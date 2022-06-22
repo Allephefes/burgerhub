@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Modal from '../../UI/Modal/Modal';
 import ProductContext from '../../../context/product-context';
-import BurgerItem from '../../Products/ProductItem/BurgerItem';
+import BurgerItem from '../../Products/Items/BurgerItem';
 
 const Cart = (props) => {
     const ctx = useContext(ProductContext);
