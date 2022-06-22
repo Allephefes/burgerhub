@@ -62,8 +62,8 @@ const productReducer = (state, action) => {
                         }
                     }
                     else {
-                        updatedBurger.meat.amount = updatedBurger.meat.amount - 1;
-                        updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger.meat.price)) * 100) / 100;
+                        updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger.meat.price) * updatedBurger.meat.amount) * 100) / 100;
+                        updatedBurger.meat.amount = 0;
                     }
                 }
                 updatedBurger.meat = {
