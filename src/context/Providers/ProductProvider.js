@@ -102,17 +102,62 @@ const productReducer = (state, action) => {
     }
     else if (action.type === 'DELETE_ITEM') {
         const updatedBurger = state.currentBurger;
-        updatedBurger[action.itemName] = '';
-        updatedBurger.price = Math.round((updatedBurger.price - Number(action.price)) * 100) / 100;
-        return {
-            currentBurger: updatedBurger,
-            burgers: state.burgers,
-            price: state.price,
-            amount: state.amount
+        switch (action.itemName) {
+            case 'bun':
+            case 'topping': {
+                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName].price)) * 100) / 100;
+                updatedBurger[action.itemName] = { name: '', price: 0 };
+                console.log(updatedBurger);
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            case 'meat': {
+                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger.meat.price)) * 100) / 100;
+                if (updatedBurger.meat.amount === 1) {
+                    updatedBurger.meat = { name: '', price: 0, amount: 0 };
+                    return {
+                        currentBurger: updatedBurger,
+                        burgers: state.burgers,
+                        price: state.price,
+                        amount: state.amount
+                    }
+                }
+                updatedBurger.meat = {
+                    ...updatedBurger.meat,
+                    amount: updatedBurger.meat.amount - 1
+                }
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            case 'sauce':
+            case 'veggies': {
+                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName][0].price)) * 100) / 100;
+                updatedBurger[action.itemName].shift();
+                return {
+                    currentBurger: updatedBurger,
+                    burgers: state.burgers,
+                    price: state.price,
+                    amount: state.amount
+                }
+            }
+            default: {
+                return {
+                    currentBurger: state.currentBurger,
+                    price: state.price,
+                    burgers: state.burgers,
+                    amount: state.amount
+                }
+            }
         }
-
     }
-    return state;
 }
 
 const ProductProvider = (props) => {
@@ -130,8 +175,8 @@ const ProductProvider = (props) => {
         dispatchProductAction({ type: 'SET_ITEM', itemName: itemName, item: item });
     }
 
-    const removeItem = (itemName, price) => {
-        dispatchProductAction({ type: 'DELETE_ITEM', itemName: itemName, price: price })
+    const removeItem = (itemName) => {
+        dispatchProductAction({ type: 'DELETE_ITEM', itemName: itemName})
     }
 
     const productContext = {
