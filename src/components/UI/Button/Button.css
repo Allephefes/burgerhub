@@ -1,12 +1,13 @@
 .button {
   font: inherit;
-  padding: 0.5rem 1.5rem;
-  border: 5px solid #FF9900;
+  padding: 0.25rem 0.75rem;
+  border: 4px solid #FF9900;
   color: white;
   background: #000000;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
   cursor: pointer;
-  border-radius: 1vw
+  border-radius: 1vw;
+  margin: 0.125rem
 }
 
 .button:focus {
