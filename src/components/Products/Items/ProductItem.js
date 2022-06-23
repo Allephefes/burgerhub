@@ -16,7 +16,7 @@ const ProductItem = (props) => {
 
     const removeItem = (event) => {
         event.preventDefault();
-        ctx.removeItem(props.part);
+        ctx.removeItem(props.part, props.name);
     }
 
     return <li className='meal'>
