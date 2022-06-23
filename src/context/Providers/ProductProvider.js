@@ -107,7 +107,6 @@ const productReducer = (state, action) => {
             case 'topping': {
                 updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName].price)) * 100) / 100;
                 updatedBurger[action.itemName] = { name: '', price: 0 };
-                console.log(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -179,11 +178,22 @@ const ProductProvider = (props) => {
         dispatchProductAction({ type: 'DELETE_ITEM', itemName: itemName})
     }
 
+    const getItem = (part, item) => {
+        const burger = productState.currentBurger;
+        if(/veggies|sauce/.test(part)) {
+            return burger[part].filter((obj) => {return obj.name === item}).length !== 0;
+        }
+        else {
+            return burger[part].name === item;
+        }
+    }
+
     const productContext = {
         currentBurger: productState.currentBurger,
         burgers: productState.burgers,
         amount: productState.amount,
         setItem: setItem,
+        getItem: getItem,
         setBurger: setBurger,
         removeItem: removeItem,
         removeBurger: removeBurger
