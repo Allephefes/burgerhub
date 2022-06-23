@@ -47,7 +47,6 @@ const AddProduct = () => {
     const priceHandler = (event) => {
         if (!/[' A-Za-z']/.test(event.target.value)) {
             setProduct({...product, price:event.target.value});   
-            console.log(product);    
         }
     }
 
