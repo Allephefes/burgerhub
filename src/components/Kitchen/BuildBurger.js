@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import Select from 'react-select';
 
 import Button from '../UI/Button/Button';
 import ProductContext from '../../context/product-context';
@@ -11,37 +10,33 @@ const BuildBurger = (props) => {
 
     const ctx = useContext(ProductContext);
 
-    const options = [
-        { value: 'bun', label: 'bun' },
-        { value: 'meat', label: 'meat' },
-        { value: 'veggies', label: 'veggies' },
-        { value: 'topping', label: 'topping' },
-        { value: 'sauce', label: 'sauce' }
-    ];
-
-    const style = {
-        option: (provided, state) => ({
-            ...provided,
-            borderBottom: '1px dotted pink',
-            color: state.isSelected ? 'black' : 'blue',
-            padding: 20,
-        })
-    }
-
-    const handler = (event) => {
-        setFilter(event.value);
-    }
-
     return (
-        <React.Fragment>
+        <>
             <section className='summary'>
                 <h2>Build Your Burger!</h2>
-                <BurgerItem item={ctx.currentBurger}></BurgerItem>
-                <Select styles={style} options={options} onChange={handler} />
+                <BurgerItem item={ctx.currentBurger}>
+                    <div className='fdir-row'>
+                        <div>
+                            <Button onClick={() => { setFilter('bun'); }}>Edit</Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => { setFilter('meat'); }}>Edit</Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => { setFilter('veggies'); }}>Edit</Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => { setFilter('topping'); }}>Edit</Button>
+                        </div>
+                        <div>
+                            <Button onClick={() => { setFilter('sauce'); }}>Edit</Button>
+                        </div>
+                    </div>
+                </BurgerItem>
                 {ctx.currentBurger.price !== 0 ? <Button onClick={() => ctx.setBurger()}>Add to Cart</Button> : ''}
             </section>
             <ShowProducts filter={filter}></ShowProducts>
-        </React.Fragment>
+        </>
     );
 };
 export default BuildBurger;
