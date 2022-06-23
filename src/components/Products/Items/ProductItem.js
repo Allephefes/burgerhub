@@ -18,7 +18,7 @@ const ProductItem = (props) => {
             <h3>{props.name}</h3>
             <div>{price}</div>
         </div>
-        <Button className='form' onClick={setItem}>{ctx.currentBurger[props.part].name === '' || (props.part === 'meat' && props.name === ctx.currentBurger[props.part].name) ? '+ Add' : 'Change'}</Button>
+        <Button className='form' onClick={setItem}>{ctx.currentBurger[props.part].name === '' || (props.part === 'meat' && props.name === ctx.currentBurger[props.part].name) || /veggies|sauce/.test(props.part) ? '+ Add' : 'Change'}</Button>
     </li>
 }
 

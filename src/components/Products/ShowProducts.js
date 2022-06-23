@@ -13,11 +13,19 @@ const ShowProducts = (props) => {
     useEffect(() => {
         const effect = async () => {
             return await Products.getProducts().then((products) => {
-                if(props.filter) {
+                if(/veggies|sauce/.test(props.filter)){
+                    let usedProducts = ctx.currentBurger[props.filter].map((item) => {return item.name});
                     products = products.filter((product) => {
-                        if(props.filter === 'meat') {
-                            return product.part === props.filter;
-                        }
+                        return product.part === props.filter && !usedProducts.includes(product.name);
+                    })
+                }
+                else if(/meat/.test(props.filter)) {
+                    products = products.filter((product) => {
+                        return product.part === props.filter && (product.name !== ctx.currentBurger.meat.name || ctx.currentBurger.meat.amount <= 4);
+                    })
+                }
+                else {
+                    products = products.filter((product) => {
                         return product.part === props.filter && product.name !== ctx.currentBurger[props.filter].name;
                     })
                 }
