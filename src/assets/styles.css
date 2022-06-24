@@ -7,8 +7,8 @@
 @import './UI/Modal/modal.css';
 @import './Products';
 
-.jc {
-    justify-content: space-between;
+.dis-inflex {
+    display: flex;
 }
 
 .ml-1 {

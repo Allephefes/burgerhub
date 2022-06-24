@@ -24,6 +24,7 @@ const ProductItem = (props) => {
             <h3>{props.name}</h3>
             <div>{price}</div>
         </div>
+        <div className='dis-flex'>
         {usedProduct ?
             <Button className='form' onClick={removeItem}>
                 Remove
@@ -35,6 +36,7 @@ const ProductItem = (props) => {
             </Button> : 
             ''
         }
+        </div>
     </li>
 }
 
