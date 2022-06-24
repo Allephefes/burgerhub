@@ -57,6 +57,19 @@ const productReducer = (state, action) => {
             amount: updatedAmount
         }
     }
+    else if (action.type === 'DELETE_BURGER') {
+        const updatedBurgers = state.burgers.filter((obj) => {
+            return obj.id !== action.burger.id;
+        });
+        const updatedPrice = Math.round((state.amount - Number(action.burger.price)) * 100) / 100;
+        const updatedAmount = updatedBurgers.length;
+        return {
+            currentBurger: state.currentBurger,
+            price: updatedPrice,
+            burgers: updatedBurgers,
+            amount: updatedAmount
+        }
+    }
     else if (action.type === 'SET_ITEM') {
         const updatedBurger = state.currentBurger;
         const item = action.item;
@@ -199,8 +212,8 @@ const ProductProvider = (props) => {
         dispatchProductAction({ type: 'SET_BURGER', burger: productState.currentBurger });
     }
 
-    const removeBurger = (part, price) => {
-        dispatchProductAction({ type: 'DELETE_BURGER', part: part, price: price })
+    const removeBurger = (burger) => {
+        dispatchProductAction({ type: 'DELETE_BURGER', burger: burger })
     }
 
     const setItem = (item) => {
