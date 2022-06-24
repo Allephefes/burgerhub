@@ -29,9 +29,7 @@ const ShowProducts = (props) => {
                     return <ProductItem
                         className='ml-1'
                         key={product.id}
-                        name={product.name}
-                        part={product.part}
-                        price={product.price}>
+                        product={product}>
                     </ProductItem>;
                 })}
             </ul>

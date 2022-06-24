@@ -33,7 +33,7 @@ const BuildBurger = (props) => {
                         </div>
                     </div>
                 </BurgerItem>
-                {ctx.currentBurger.price !== 0 ? <Button onClick={() => ctx.setBurger()}>Add to Cart</Button> : ''}
+                {ctx.goodBurger() ? <Button onClick={() => ctx.setBurger()}>Add to Cart</Button> : ''}
             </section>
             <ShowProducts filter={filter}></ShowProducts>
         </>
