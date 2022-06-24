@@ -17,7 +17,8 @@ const ProductContext = React.createContext({
     goodBurger : () => { },
     removeBurger: () => { },
     getItem: () => { },
-    removeItem: () => { }
+    removeItem: () => { },
+    setCurrentBurger: () => { }
 });
 
 export default ProductContext;

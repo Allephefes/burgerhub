@@ -22,7 +22,7 @@ const idBuilder = (burger) => {
     if(burger.veggies.length !== 0) {
         id = id + '-';
         burger.veggies.forEach((obj) => {
-            id = id + obj.id;
+            id = id + `${obj.id}/0`;
         })
     }
     if(burger.topping.id !== '') {
@@ -31,7 +31,7 @@ const idBuilder = (burger) => {
     if(burger.sauce.length !== 0) {
         id = id + '-';
         burger.sauce.forEach((obj) => {
-            id = id + obj.id;
+            id = id + `${obj.id}/0`;
         })
     }
     return id;
@@ -39,6 +39,10 @@ const idBuilder = (burger) => {
 
 const productReducer = (state, action) => {
     if (action.type === 'SET_BURGER') {
+        const amountOfBurgersAlike = state.burgers.filter((obj) => {return obj.id.includes(action.burger.id)}).length;
+        if(amountOfBurgersAlike !== 0) {
+            action.burger.id = `${action.burger.id}-${amountOfBurgersAlike}`
+        }
         const updatedBurgers = state.burgers.concat(action.burger);
         const updatedPrice = Math.round((state.amount + Number(action.burger.price)) * 100) / 100;
         const updatedAmount = updatedBurgers.length;
@@ -203,6 +207,15 @@ const productReducer = (state, action) => {
             }
         }
     }
+    else if (action.type === 'SET_CURRENT_BURGER') {
+        localStorage.setItem('edited-burger', action.burger.id);
+        return {
+            currentBurger: action.burger,
+            price: state.price,
+            burgers: state.burgers,
+            amount: state.amount
+        }
+    }
 }
 
 const ProductProvider = (props) => {
@@ -213,7 +226,15 @@ const ProductProvider = (props) => {
     }
 
     const removeBurger = (burger) => {
-        dispatchProductAction({ type: 'DELETE_BURGER', burger: burger })
+        dispatchProductAction({ type: 'DELETE_BURGER', burger: burger });
+    }
+
+    const goodBurger = () => {
+        const burger = productState.currentBurger;
+        if(burger.bun.id === '' || burger.meat.id === '') {
+            return false;
+        }
+        return true;
     }
 
     const setItem = (item) => {
@@ -234,12 +255,8 @@ const ProductProvider = (props) => {
         }
     }
 
-    const goodBurger = () => {
-        const burger = productState.currentBurger;
-        if(burger.bun.id === '' || burger.meat.id === '') {
-            return false;
-        }
-        return true;
+    const setCurrentBurger = (burger) => {
+        dispatchProductAction({ type: 'SET_CURRENT_BURGER', burger: burger})
     }
 
     const productContext = {
@@ -251,7 +268,8 @@ const ProductProvider = (props) => {
         setBurger: setBurger,
         removeItem: removeItem,
         removeBurger: removeBurger,
-        goodBurger: goodBurger
+        goodBurger: goodBurger,
+        setCurrentBurger: setCurrentBurger
     }
 
     return <ProductContext.Provider value={productContext}>
