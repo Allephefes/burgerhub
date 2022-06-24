@@ -4,16 +4,37 @@ import ProductContext from '../product-context';
 
 const defaultProductState = {
     currentBurger: {
-        bun: { name: '', price: 0 },
-        meat: { name: '', price: 0, amount: 0 },
+        id: '',
+        bun: { id: '', name: '', price: 0 },
+        meat: { id: '', name: '', price: 0, amount: 0 },
         veggies: [],
-        topping: { name: '', price: 0 },
+        topping: { id: '', name: '', price: 0 },
         sauce: [],
         price: 0
     },
     price: 0,
     burgers: [],
     amount: 0
+}
+
+const idBuilder = (burger) => {
+    let id = `${burger.bun.id}-${burger.meat.id}${burger.meat.amount}`;
+    if(burger.veggies.length !== 0) {
+        id = id + '-';
+        burger.veggies.forEach((obj) => {
+            id = id + obj.id;
+        })
+    }
+    if(burger.topping.id !== '') {
+        id = id + `-${burger.topping.id}`;
+    }
+    if(burger.sauce.length !== 0) {
+        id = id + '-';
+        burger.sauce.forEach((obj) => {
+            id = id + obj.id;
+        })
+    }
+    return id;
 }
 
 const productReducer = (state, action) => {
@@ -23,10 +44,11 @@ const productReducer = (state, action) => {
         const updatedAmount = updatedBurgers.length;
         return {
             currentBurger: {
-                bun: { name: '', price: 0 },
-                meat: { name: '', price: 0, amount: 0 },
+                id: '',
+                bun: { id: '', name: '', price: 0 },
+                meat: { id: '', name: '', price: 0, amount: 0 },
                 veggies: [],
-                topping: { name: '', price: 0 },
+                topping: { id: '', name: '', price: 0 },
                 sauce: [],
                 price: 0
             },
@@ -37,11 +59,13 @@ const productReducer = (state, action) => {
     }
     else if (action.type === 'SET_ITEM') {
         const updatedBurger = state.currentBurger;
-        switch (action.itemName) {
+        const item = action.item;
+        switch (item.part) {
             case 'bun':
             case 'topping': {
-                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName].price) + Number(action.item.price)) * 100) / 100;
-                updatedBurger[action.itemName] = action.item;
+                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[item.part].price) + Number(item.price)) * 100) / 100;
+                updatedBurger[item.part] = item;
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -51,9 +75,10 @@ const productReducer = (state, action) => {
             }
             case 'meat': {
                 if (updatedBurger.meat.amount !== 0) {
-                    if (updatedBurger.meat.name === action.item.name) {
+                    if (updatedBurger.meat.name === item.name) {
                         updatedBurger.meat.amount = updatedBurger.meat.amount + 1;
                         updatedBurger.price = Math.round((updatedBurger.price + Number(updatedBurger.meat.price)) * 100) / 100;
+                        updatedBurger.id = idBuilder(updatedBurger);
                         return {
                             currentBurger: updatedBurger,
                             burgers: state.burgers,
@@ -67,11 +92,11 @@ const productReducer = (state, action) => {
                     }
                 }
                 updatedBurger.meat = {
-                    name: action.item.name,
-                    price: action.item.price,
+                    ...item,
                     amount: updatedBurger.meat.amount + 1
                 }
-                updatedBurger.price = Math.round((updatedBurger.price + Number(action.item.price)) * 100) / 100;
+                updatedBurger.price = Math.round((updatedBurger.price + Number(item.price)) * 100) / 100;
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -81,8 +106,9 @@ const productReducer = (state, action) => {
             }
             case 'sauce':
             case 'veggies': {
-                updatedBurger.price = Math.round((updatedBurger.price + Number(action.item.price)) * 100) / 100;
-                updatedBurger[action.itemName] = updatedBurger[action.itemName].concat(action.item);
+                updatedBurger.price = Math.round((updatedBurger.price + Number(item.price)) * 100) / 100;
+                updatedBurger[item.part] = updatedBurger[item.part].concat(item);
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -102,11 +128,13 @@ const productReducer = (state, action) => {
     }
     else if (action.type === 'DELETE_ITEM') {
         const updatedBurger = state.currentBurger;
-        switch (action.itemName) {
+        const item = action.item;
+        switch (item.part) {
             case 'bun':
             case 'topping': {
-                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName].price)) * 100) / 100;
-                updatedBurger[action.itemName] = { name: '', price: 0 };
+                updatedBurger.price = Math.round((updatedBurger.price - Number(item.price)) * 100) / 100;
+                updatedBurger[item.part] = { id: '', name: '', price: 0 };
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -115,9 +143,10 @@ const productReducer = (state, action) => {
                 }
             }
             case 'meat': {
-                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger.meat.price)) * 100) / 100;
+                updatedBurger.price = Math.round((updatedBurger.price - Number(item.price)) * 100) / 100;
                 if (updatedBurger.meat.amount === 1) {
-                    updatedBurger.meat = { name: '', price: 0, amount: 0 };
+                    updatedBurger.meat = { id: '', name: '', price: 0, amount: 0 };
+                    updatedBurger.id = idBuilder(updatedBurger);
                     return {
                         currentBurger: updatedBurger,
                         burgers: state.burgers,
@@ -129,6 +158,7 @@ const productReducer = (state, action) => {
                     ...updatedBurger.meat,
                     amount: updatedBurger.meat.amount - 1
                 }
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -138,10 +168,11 @@ const productReducer = (state, action) => {
             }
             case 'sauce':
             case 'veggies': {
-                updatedBurger.price = Math.round((updatedBurger.price - Number(updatedBurger[action.itemName][0].price)) * 100) / 100;
-                updatedBurger[action.itemName] = updatedBurger[action.itemName].filter((item) => {
-                    return item.name !== action.name
+                updatedBurger.price = Math.round((updatedBurger.price - Number(item.price)) * 100) / 100;
+                updatedBurger[item.part] = updatedBurger[item.part].filter((obj) => {
+                    return obj.name !== item.name
                 });
+                updatedBurger.id = idBuilder(updatedBurger);
                 return {
                     currentBurger: updatedBurger,
                     burgers: state.burgers,
@@ -168,26 +199,34 @@ const ProductProvider = (props) => {
         dispatchProductAction({ type: 'SET_BURGER', burger: productState.currentBurger });
     }
 
-    const removeBurger = (itemName, price) => {
-        dispatchProductAction({ type: 'DELETE_BURGER', itemName: itemName, price: price })
+    const removeBurger = (part, price) => {
+        dispatchProductAction({ type: 'DELETE_BURGER', part: part, price: price })
     }
 
-    const setItem = (itemName, item) => {
-        dispatchProductAction({ type: 'SET_ITEM', itemName: itemName, item: item });
+    const setItem = (item) => {
+        dispatchProductAction({ type: 'SET_ITEM', item: item });
     }
 
-    const removeItem = (itemName, name) => {
-        dispatchProductAction({ type: 'DELETE_ITEM', itemName: itemName, name: name})
+    const removeItem = (item) => {
+        dispatchProductAction({ type: 'DELETE_ITEM', item: item})
     }
 
-    const getItem = (part, item) => {
+    const getItem = (item) => {
         const burger = productState.currentBurger;
-        if(/veggies|sauce/.test(part)) {
-            return burger[part].filter((obj) => {return obj.name === item}).length !== 0;
+        if(/veggies|sauce/.test(item.part)) {
+            return burger[item.part].filter((obj) => {return obj.name === item.name}).length !== 0;
         }
         else {
-            return burger[part].name === item;
+            return burger[item.part].name === item.name;
         }
+    }
+
+    const goodBurger = () => {
+        const burger = productState.currentBurger;
+        if(burger.bun.id === '' || burger.meat.id === '') {
+            return false;
+        }
+        return true;
     }
 
     const productContext = {
@@ -198,7 +237,8 @@ const ProductProvider = (props) => {
         getItem: getItem,
         setBurger: setBurger,
         removeItem: removeItem,
-        removeBurger: removeBurger
+        removeBurger: removeBurger,
+        goodBurger: goodBurger
     }
 
     return <ProductContext.Provider value={productContext}>

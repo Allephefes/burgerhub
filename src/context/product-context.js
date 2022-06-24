@@ -14,6 +14,7 @@ const ProductContext = React.createContext({
     amount: 0,
     setItem: () => { },
     setBurger: () => { },
+    goodBurger : () => { },
     getItem: () => { },
     removeItem: () => { }
 });
