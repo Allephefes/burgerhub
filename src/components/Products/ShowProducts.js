@@ -20,7 +20,7 @@ const ShowProducts = (props) => {
             })
         };
         effect();
-    }, [props.filter, ctx]);
+    }, [props.filter, ctx.currentBurger]);
 
     return <section className='meals'>
         <Card className='white'>
