@@ -6,8 +6,6 @@ import Cart from './Cart/Cart';
 import KitchenHeader from '../../assets/burger-header.jpg';
 import BuildBurger from './BuildBurger';
 
-import ProductProvider from '../../context/Providers/ProductProvider';
-
 const Kitchen = () => {
     const [cart, setCart] = useState(false);
 
@@ -15,7 +13,7 @@ const Kitchen = () => {
         setCart(!cart);
     }
 
-    return <ProductProvider>
+    return <>
         <Header>
             <CartIcon onClick={cartIconHandler}></CartIcon>
         </Header>
@@ -24,7 +22,7 @@ const Kitchen = () => {
         </div>
         {cart ? <Cart close={cartIconHandler}></Cart> : ''}
         <BuildBurger></BuildBurger>
-    </ProductProvider>
+    </>
 }
 
 export default Kitchen;
