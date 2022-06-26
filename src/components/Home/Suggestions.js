@@ -43,19 +43,10 @@ const Suggestions = () => {
                 { id: 15, name: 'amba', part: 'sauce', price: '0.04' }
             ],
             price: 20.29
-        },
-        {
-            id: '',
-            bun: { id: '', name: '', price: 0 },
-            meat: { id: '', name: '', price: 0, amount: 0 },
-            veggies: [],
-            topping: { id: '', name: '', price: 0 },
-            sauce: [],
-            price: 0
         }
     ];
-    return <>
-        <Card>
+    return <Card className='dis-inflex'>
+        <Card className='suggested'>
             <Button>
                 <Link to='/kitchen' style={{ color: 'inherit', textDecoration: 'inherit' }} onClick={() => {ctx.setCurrentBurger(suggestedBurgers[0])}}>
                     <h2>Classic Lover</h2>
@@ -71,12 +62,12 @@ const Suggestions = () => {
         </Card>
         <Card>
             <Button>
-                <Link to='/kitchen' style={{ color: 'inherit', textDecoration: 'inherit' }} onClick={() => {ctx.setCurrentBurger(suggestedBurgers[2])}}>
+                <Link to='/kitchen' style={{ color: 'inherit', textDecoration: 'inherit' }} onClick={() => {ctx.setCurrentBurger()}}>
                     Build Your Own!!!
                 </Link>
             </Button>
         </Card>
-    </>
+    </Card>
 }
 
 export default Suggestions;

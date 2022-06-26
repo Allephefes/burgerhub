@@ -39,12 +39,25 @@ const idBuilder = (burger) => {
 
 const productReducer = (state, action) => {
     if (action.type === 'SET_BURGER') {
-        const amountOfBurgersAlike = state.burgers.filter((obj) => {return obj.id.includes(action.burger.id)}).length;
-        if(amountOfBurgersAlike !== 0) {
-            action.burger.id = `${action.burger.id}-${amountOfBurgersAlike}`
+        let burgers = state.burgers;
+        const burger = action.burger;
+        console.log(burger);
+        let updatedPrice = Math.round((state.price + Number(burger.price)) * 100) / 100;
+        const storedId = localStorage.getItem('edited-burger');
+        if(storedId) {
+            const beforeEdit = burgers.filter((obj) => {
+                return obj.id === burger.id;
+            });
+            burgers = burgers.filter((obj) => {
+                return obj.id !== burger.id;
+            });
+            updatedPrice = Math.round((state.price - Number(beforeEdit.price)) * 100) / 100;
         }
-        const updatedBurgers = state.burgers.concat(action.burger);
-        const updatedPrice = Math.round((state.amount + Number(action.burger.price)) * 100) / 100;
+        const amountOfBurgersAlike = burgers.filter((obj) => {return obj.id.split('#')[0] === (burger.id.split('#')[0])}).length;
+        if(amountOfBurgersAlike !== 0) {
+            burger.id = `${burger.id}#${amountOfBurgersAlike}`
+        }
+        const updatedBurgers = burgers.concat(burger);
         const updatedAmount = updatedBurgers.length;
         return {
             currentBurger: {
@@ -62,7 +75,11 @@ const productReducer = (state, action) => {
         }
     }
     else if (action.type === 'DELETE_BURGER') {
-        const updatedBurgers = state.burgers.filter((obj) => {
+        if(!action.burger) {
+            return state;
+        }
+        const burgers = state.burgers;
+        const updatedBurgers = burgers.filter((obj) => {
             return obj.id !== action.burger.id;
         });
         const updatedPrice = Math.round((state.amount - Number(action.burger.price)) * 100) / 100;
@@ -208,7 +225,6 @@ const productReducer = (state, action) => {
         }
     }
     else if (action.type === 'SET_CURRENT_BURGER') {
-        localStorage.setItem('edited-burger', action.burger.id);
         return {
             currentBurger: action.burger,
             price: state.price,
@@ -237,6 +253,14 @@ const ProductProvider = (props) => {
         return true;
     }
 
+    const getBurger = (id) => {
+        const burgers = productState.burgers;
+        console.log(burgers)
+        return burgers.filter((obj) => {
+            return obj.id === id;
+        })[0];
+    }
+
     const setItem = (item) => {
         dispatchProductAction({ type: 'SET_ITEM', item: item });
     }
@@ -256,17 +280,30 @@ const ProductProvider = (props) => {
     }
 
     const setCurrentBurger = (burger) => {
+        if(!burger) {
+            burger = {
+                id: '',
+                bun: { id: '', name: '', price: 0 },
+                meat: { id: '', name: '', price: 0, amount: 0 },
+                veggies: [],
+                topping: { id: '', name: '', price: 0 },
+                sauce: [],
+                price: 0
+            };
+        }
         dispatchProductAction({ type: 'SET_CURRENT_BURGER', burger: burger})
     }
 
     const productContext = {
         currentBurger: productState.currentBurger,
         burgers: productState.burgers,
+        price: productState.price,
         amount: productState.amount,
         setItem: setItem,
         getItem: getItem,
-        setBurger: setBurger,
         removeItem: removeItem,
+        setBurger: setBurger,
+        getBurger: getBurger,
         removeBurger: removeBurger,
         goodBurger: goodBurger,
         setCurrentBurger: setCurrentBurger

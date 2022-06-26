@@ -12,10 +12,11 @@ const ProductContext = React.createContext({
     burger: [],
     price: 0,
     amount: 0,
-    setItem: () => { },
     setBurger: () => { },
+    getBurger: () => { },
     goodBurger : () => { },
     removeBurger: () => { },
+    setItem: () => { },
     getItem: () => { },
     removeItem: () => { },
     setCurrentBurger: () => { }

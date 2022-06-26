@@ -6,6 +6,7 @@
 @import './UI/backdrop.css';
 @import './UI/Modal/modal.css';
 @import './Products';
+@import './Home';
 
 .dis-inflex {
     display: flex;

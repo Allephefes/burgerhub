@@ -1,4 +1,6 @@
 .modal {
+    height: 450px;
+    overflow-y: scroll;
     position: fixed;
     top: 20vh;
     left: 5%;
