@@ -13,10 +13,6 @@ const BuildBurger = () => {
     const addToCartHandler = (event) => {
         event.preventDefault();
         ctx.setBurger();
-        const id = localStorage.getItem('edited-burger');
-        if (id) {
-            localStorage.removeItem('edited-burger');
-        }
     }
 
     return (

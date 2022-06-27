@@ -47,6 +47,7 @@ const productReducer = (state, action) => {
         let updatedPrice = Math.round((state.price + Number(burger.price)) * 100) / 100;
         const storedId = localStorage.getItem('edited-burger');
         if(storedId) {
+            localStorage.removeItem('edited-burger');
             const beforeEdit = burgers.filter((obj) => {
                 return obj.id === burger.id;
             });
