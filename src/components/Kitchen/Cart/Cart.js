@@ -13,17 +13,21 @@ const Cart = (props) => {
             return <ul key={burger.id} className='cart-item'>
                 <BurgerItem item={burger}>
                     <div>
-                        <Button onClick={() => {ctx.removeBurger(burger)}}>Remove</Button>
+                        <Button onClick={() => { ctx.removeBurger(burger); }}>Remove</Button>
                     </div>
                     <div>
-                        <Button>Edit</Button>
+                        <Button onClick={() => {
+                            localStorage.setItem('edited-burger', burger.id);
+                            ctx.setCurrentBurger(burger);
+                            props.close();
+                        }}>Edit</Button>
                     </div>
                 </BurgerItem>
             </ul>
         })
     );
 
-    const totalAmount = ctx.amount;
+    const totalAmount = ctx.price;
 
     return <Modal>
         {cartItems}
