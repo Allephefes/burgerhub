@@ -5,10 +5,19 @@ import ProductContext from '../../context/product-context';
 import BurgerItem from '../Products/Items/BurgerItem';
 import ShowProducts from '../Products/ShowProducts';
 
-const BuildBurger = (props) => {
+const BuildBurger = () => {
     const [filter, setFilter] = useState('none');
 
     const ctx = useContext(ProductContext);
+
+    const addToCartHandler = (event) => {
+        event.preventDefault();
+        ctx.setBurger();
+        const id = localStorage.getItem('edited-burger');
+        if (id) {
+            localStorage.removeItem('edited-burger');
+        }
+    }
 
     return (
         <>
@@ -33,7 +42,18 @@ const BuildBurger = (props) => {
                         </div>
                     </div>
                 </BurgerItem>
-                {ctx.goodBurger() ? <Button onClick={() => ctx.setBurger()}>Add to Cart</Button> : ''}
+                {ctx.goodBurger() ?
+                    <Button onClick={addToCartHandler}>
+                        Add to Cart
+                    </Button> :
+                    ''
+                }
+                {ctx.currentBurger.id !== '' ?
+                    <Button onClick={() => {ctx.setCurrentBurger()}}>
+                        Clear
+                    </Button> :
+                    ''
+                }
             </section>
             <ShowProducts filter={filter}></ShowProducts>
         </>
