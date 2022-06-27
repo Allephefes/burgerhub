@@ -18,7 +18,10 @@ const defaultProductState = {
 }
 
 const idBuilder = (burger) => {
-    let id = `${burger.bun.id}-${burger.meat.id}${burger.meat.amount}`;
+    let id = burger.bun.id;
+    if(burger.meat.id !== '') {
+        id = id + `-${burger.meat.id}${burger.meat.amount}`;
+    }
     if(burger.veggies.length !== 0) {
         id = id + '-';
         burger.veggies.forEach((obj) => {
@@ -41,7 +44,6 @@ const productReducer = (state, action) => {
     if (action.type === 'SET_BURGER') {
         let burgers = state.burgers;
         const burger = action.burger;
-        console.log(burger);
         let updatedPrice = Math.round((state.price + Number(burger.price)) * 100) / 100;
         const storedId = localStorage.getItem('edited-burger');
         if(storedId) {
