@@ -4,7 +4,7 @@ const BurgerItem = (props) => {
     const price = props.item.price;
     const burger = props.item;
 
-    return <React.Fragment>
+    return <>
         <div className='fdir-column'>
             <div className='fdir-row'>
                 <div className='item'>Bun: {burger.bun.name !== '' ? burger.bun.name : '-'}</div>
@@ -18,7 +18,7 @@ const BurgerItem = (props) => {
         <h3>
             {price !== 0 ? `$${price}` : ''}
         </h3>
-    </React.Fragment>
+    </>
 }
 
 export default BurgerItem;
